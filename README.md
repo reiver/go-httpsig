@@ -25,3 +25,7 @@ GOPROXY=direct go get github.com/reiver/go-httpsig
 ## Author
 
 Package **httpsig** was written by [Charles Iliya Krempeaux](http://reiver.link)
+
+## See Also
+
+* [HACKING.md]
