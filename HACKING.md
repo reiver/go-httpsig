@@ -14,7 +14,7 @@ There are two specifications:
 | Request target   | `(request-target)` pseudo-header            | `@method`, `@authority`, `@path`, `@query`, etc. |
 | Body integrity   | `Digest` header (ad-hoc)                    | `Content-Digest` (RFC 9530)                      |
 
------
+---
 
 ## How the Fediverse Uses HTTP Signatures
 
@@ -26,3 +26,17 @@ On the Fediverse, it is used for:
 * **GET requests** (fetching actors): Optionally signed; required in Mastodon's "authorized fetch" / secure mode
 * **Algorithm**: Almost universally **RSA-SHA256** (RSASSA-PKCS1-v1_5), 2048-bit keys. `hs2019` exists but usually still means RSA-SHA256
 * **Key discovery**: `keyId` in the signature is a URL pointing to an ActivityPub actor document containing a `publicKey` PEM field
+
+### Known Fediverse Quirks
+
+- Mastodon historically omitted query strings from `(request-target)`
+- `keyId` format varies: fragment URIs (`actor#main-key`) vs path URIs (`/users/alice/main-key`)
+- Clock skew tolerance ranges from 30 seconds to 12 hours across implementations
+- Very little shared library code — most implementations rolled their own
+- "Double-knocking" (retry with different spec version) is the interop workaround
+
+### The Transition to RFC 9421
+
+- Mastodon 4.4: Verifies RFC 9421 signatures
+- Mastodon 4.5: Signs outgoing with RFC 9421
+- Fedify (TypeScript) already supports dual-spec with capability caching
