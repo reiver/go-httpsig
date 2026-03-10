@@ -28,4 +28,5 @@ Package **httpsig** was written by [Charles Iliya Krempeaux](http://reiver.link)
 
 ## See Also
 
+* [QUIRKS.md]
 * [HACKING.md]
