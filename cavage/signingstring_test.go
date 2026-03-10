@@ -87,7 +87,7 @@ func TestSigningString(t *testing.T) {
 				r.Header.Set(k, v)
 			}
 
-			actual, err := cavage.SigningString(r, test.Signed, test.Created, test.Expires)
+			actual, err := cavage.SigningString(r, test.Created, test.Expires, test.Signed...)
 			if nil != err {
 				t.Errorf("For test #%d, did not expect an error but actually got one.", testNumber)
 				t.Logf("ERROR: %s", err)
@@ -110,28 +110,28 @@ func TestSigningString_errors(t *testing.T) {
 	r, _ := http.NewRequest("GET", "http://example.org/", nil)
 
 	t.Run("empty headers", func(t *testing.T) {
-		_, err := cavage.SigningString(r, nil, 0, 0)
+		_, err := cavage.SigningString(r, 0, 0)
 		if err == nil {
 			t.Fatal("expected error for empty headers")
 		}
 	})
 
 	t.Run("missing header", func(t *testing.T) {
-		_, err := cavage.SigningString(r, []string{"x-no-such-header"}, 0, 0)
+		_, err := cavage.SigningString(r, 0, 0, "x-no-such-header")
 		if err == nil {
 			t.Fatal("expected error for missing header")
 		}
 	})
 
 	t.Run("created without timestamp", func(t *testing.T) {
-		_, err := cavage.SigningString(r, []string{"(created)"}, 0, 0)
+		_, err := cavage.SigningString(r, 0, 0, "(created)")
 		if err == nil {
 			t.Fatal("expected error for (created) without timestamp")
 		}
 	})
 
 	t.Run("expires without timestamp", func(t *testing.T) {
-		_, err := cavage.SigningString(r, []string{"(expires)"}, 0, 0)
+		_, err := cavage.SigningString(r, 0, 0, "(expires)")
 		if err == nil {
 			t.Fatal("expected error for (expires) without timestamp")
 		}

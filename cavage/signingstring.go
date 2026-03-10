@@ -32,7 +32,7 @@ const (
 //
 // Lines are joined by a single newline ("\n").
 // There is no trailing newline.
-func SigningString(httprequest *http.Request, headers []string, created, expires int64) (string, error) {
+func SigningString(httprequest *http.Request, created, expires int64, headers ...string) (string, error) {
 	if 0 == len(headers) {
 		var nada string
 		return nada, ErrEmptyHeadersList
