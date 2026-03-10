@@ -18,6 +18,9 @@ The HTTP-client "thought" it was talking to the "real" HTTP-server, but it wasn'
 For example, a proxy (HTTP) server can see the raw headers and body, modify them, and re-sign the request to the origin server.
 (The "origin server" wad the "real" server.)
 
+These servers in the middle could be malicious.
+And, could do something harmful.
+
 draft-cavage-http-signatures-12 deals with this problem.
 draft-cavage-http-signatures-12 deals with this problem by providing: application-layer integrity.
 
