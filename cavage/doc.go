@@ -1,5 +1,5 @@
 /*
-Package cavage implements HTTP-Signature signing and verification per draft-cavage-http-signatures-12 (draft-cavage):
+Package cavage implements HTTP-Signature signing and verification as per draft-cavage-http-signatures-12 (draft-cavage):
 
 https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12
 
@@ -53,6 +53,24 @@ Here is what it looks like:
 
 The Signing String is literally that text block, joined by "\n".
 The HTTP-client then sign that string using its private key (RSA-SHA256 is the most common).
+
+In this package the Signing String is created using the [SigningString] function.
+
+# The Signature Header
+
+Once the HTTP-client has the signature, it attached it as a standard HTTP-header.
+
+	┌───────────┬────────────────────────────────────────────────────────────────────────────┐
+	│ Parameter │ Description                                                                │
+	├───────────┼────────────────────────────────────────────────────────────────────────────┤
+	│ keyId     │ A string identifying the public key (often a URL or a fingerprint).        │
+	├───────────┼────────────────────────────────────────────────────────────────────────────┤
+	│ algorithm │ "e.g., rsa-sha256."                                                        │
+	├───────────┼────────────────────────────────────────────────────────────────────────────┤
+	│ headers   │ A space-separated list of the headers you included in your Signing String. │
+	├───────────┼────────────────────────────────────────────────────────────────────────────┤
+	│ signature │ The base64-encoded digital signature.                                      │
+	└───────────┴────────────────────────────────────────────────────────────────────────────┘
 
 # Signing a Request (Client Side)
 
