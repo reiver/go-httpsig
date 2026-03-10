@@ -24,18 +24,35 @@ And, could do something harmful.
 draft-cavage deals with this problem.
 draft-cavage deals with this problem by providing: application-layer integrity.
 
-With draft-cavage you sign a specific set of HTTP-headers (and optionally the body) so that even if a proxy changes other headers, the origin server can verify that the payload hasn't been tampered with.
+With draft-cavage the HTTP-client signs a specific set of HTTP-headers (and optionally the body) so that even if a proxy changes other headers, the origin server can verify that the payload hasn't been tampered with.
 
 # The Signing String (The Core Mechanism)
 
 The clever (and painful) part of draft-cavage of this is: Canonicalization.
 
-To create a digital signature, you first need a deterministic "message" to sign.
-Because HTTP-headers can be reordered or contain various white-space, you cannot simply sign the raw buffer of the HTTP-request
+To create a digital signature, the HTTP-client first need a deterministic "message" to sign.
+Because HTTP-headers can be reordered or contain more or less white-space and still the be the "same" HTTP-request, the HTTP-client cannot simply sign the raw  HTTP-request
 —
 as changing the order of HTTP-headers, or changing the white-space would change the signature.
+And, we need need the signature to always be the same for the same HTTP-request.
 
-To deal with, the HTTP-client was construct a: Signing String.
+To deal with this, the HTTP-client was construct a: Signing String.
+
+How to construct it:
+
+	1. Select the headers: The HTTP-client choose which headers to sign (e.g., "(request-target)", "host", "date", "digest")
+	2. The "(request-target)" pseudo-header: This is a custom requirement of the specification. It combines the HTT- method and the path (e.g., get /api/v1/users). This prevents "method swapping" attacks..
+	3. Concatenation: The HTTP-client create a newline-separated string of the chosen headers.
+
+Here is what it looks like:
+
+	(request-target): get /api/v1/users/123
+	host: example.com
+	date: Tue, 10 Mar 2026 15:15:10 GMT
+	igest: SHA-256=base64(hash_of_body)
+
+The Signing String is literally that text block, joined by "\n".
+The HTTP-client then sign that string using its private key (RSA-SHA256 is the most common).
 
 # Signing a Request (Client Side)
 
@@ -50,7 +67,7 @@ To sign an HTTP-request, first create a [Signer] with the cryptographic algorith
 	// The Signature header is now set on r. Send it normally.
 
 The [Signer.Headers] field controls which HTTP-headers get signed.
-For a Fediverse POST you would typically sign "(request-target)", "host", "date", and "digest".
+For a Fediverse POST the HTTP-client would typically sign "(request-target)", "host", "date", and "digest".
 For a GET, drop "digest".
 
 # Verifying a Request (Server Side)
