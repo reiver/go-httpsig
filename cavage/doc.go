@@ -110,6 +110,5 @@ Keep these things in mind:
 	• The Digest Header: The specification often requires a Digest header. This is a hash of the entire HTTP-body. If you are calculating the signature, remember to calculate the Digest first, include it in the header set, then sign the whole block.
 	• Case Sensitivity: HTTP-headers are case-insensitive by specification, but for the purpose of the Signature String, the specification usually dictates lower-casing the header names.
 
-
 */
 package cavage
