@@ -1,5 +1,5 @@
 /*
-Package cavage implements HTTP-Signature signing and verification per draft-cavage-http-signatures-12:
+Package cavage implements HTTP-Signature signing and verification per draft-cavage-http-signatures-12 (draft-cavage):
 
 https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12
 
@@ -21,14 +21,14 @@ For example, a proxy (HTTP) server can see the raw headers and body, modify them
 These servers in the middle could be malicious.
 And, could do something harmful.
 
-draft-cavage-http-signatures-12 deals with this problem.
-draft-cavage-http-signatures-12 deals with this problem by providing: application-layer integrity.
+draft-cavage deals with this problem.
+draft-cavage deals with this problem by providing: application-layer integrity.
 
-With draft-cavage-http-signatures-12 you sign a specific set of HTTP-headers (and optionally the body) so that even if a proxy changes other headers, the origin server can verify that the payload hasn't been tampered with.
+With draft-cavage you sign a specific set of HTTP-headers (and optionally the body) so that even if a proxy changes other headers, the origin server can verify that the payload hasn't been tampered with.
 
 # The Signing String (The Core Mechanism)
 
-The clever (and painful) part of draft-cavage-http-signatures-12 of this is: Canonicalization.
+The clever (and painful) part of draft-cavage of this is: Canonicalization.
 
 To create a digital signature, you first need a deterministic "message" to sign.
 Because HTTP-headers can be reordered or contain various white-space, you cannot simply sign the raw buffer of the HTTP-request
