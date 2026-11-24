@@ -31,6 +31,9 @@ const (
 	// AlgorithmRSAPSSSHA512 is RSASSA-PSS using SHA-512.
 	AlgorithmRSAPSSSHA512 Algorithm = "rsa-pss-sha512"
 
+	// AlgorithmRSAV15SHA256 is RSASSA-PKCS1-v1_5 using SHA-256 — the RFC 9421 name for what draft-cavage calls rsa-sha256.
+	AlgorithmRSAV15SHA256 Algorithm = "rsa-v1_5-sha256"
+
 	// AlgorithmHMACSHA256 is HMAC using SHA-256 (symmetric).
 	AlgorithmHMACSHA256 Algorithm = "hmac-sha256"
 )
